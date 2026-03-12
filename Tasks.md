@@ -6,7 +6,7 @@
 ### 1. Backend Setup (Django)
 - [ ] Initialize Django project and app structure
 - [x] Configure PostgreSQL database connection
-- [ ] Set up Django models (Traffic, Vehicle, Alert, Camera)
+- [x] Set up Django models (Traffic, Vehicle, Alert, Camera)
 - [ ] Create Django REST API endpoints for data operations
 - [ ] Implement authentication and authorization
 
@@ -25,7 +25,7 @@
 
 ### 4. Data Storage
 - [ ] Design PostgreSQL schema (traffic metrics, vehicle counts, timestamps)
-- [ ] Create migration scripts
+- [x] Create migration scripts
 - [ ] Implement data archival strategy
 - [ ] Set up data indexing for performance
 
