@@ -5,7 +5,7 @@
 
 ### 1. Backend Setup (Django)
 - [ ] Initialize Django project and app structure
-- [ ] Configure PostgreSQL database connection
+- [x] Configure PostgreSQL database connection
 - [ ] Set up Django models (Traffic, Vehicle, Alert, Camera)
 - [ ] Create Django REST API endpoints for data operations
 - [ ] Implement authentication and authorization
