@@ -4,11 +4,11 @@
 ## Tasks and Subtasks
 
 ### 1. Backend Setup (Django)
-- [ ] Initialize Django project and app structure
+- [x] Initialize Django project and app structure
 - [x] Configure PostgreSQL database connection
 - [x] Set up Django models (Traffic, Vehicle, Alert, Camera)
 - [x] Create Django REST API endpoints for data operations
-- [ ] Implement authentication and authorization
+- [x] Implement authentication and authorization
 
 ### 2. Camera Integration
 - [ ] Design camera data ingestion interface
