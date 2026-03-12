@@ -7,7 +7,7 @@
 - [ ] Initialize Django project and app structure
 - [x] Configure PostgreSQL database connection
 - [x] Set up Django models (Traffic, Vehicle, Alert, Camera)
-- [ ] Create Django REST API endpoints for data operations
+- [x] Create Django REST API endpoints for data operations
 - [ ] Implement authentication and authorization
 
 ### 2. Camera Integration

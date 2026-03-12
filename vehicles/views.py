@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import Vehicle
+from .serializers import VehicleSerializer
+
+
+class VehicleViewSet(viewsets.ModelViewSet):
+	queryset = Vehicle.objects.select_related('camera', 'traffic_record').all()
+	serializer_class = VehicleSerializer

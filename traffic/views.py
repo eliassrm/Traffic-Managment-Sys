@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import Traffic
+from .serializers import TrafficSerializer
+
+
+class TrafficViewSet(viewsets.ModelViewSet):
+	queryset = Traffic.objects.select_related('camera').all()
+	serializer_class = TrafficSerializer
