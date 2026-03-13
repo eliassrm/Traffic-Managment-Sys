@@ -11,10 +11,10 @@
 - [x] Implement authentication and authorization
 
 ### 2. Camera Integration
-- [ ] Design camera data ingestion interface
-- [ ] Create API endpoint to receive camera feeds/data
-- [ ] Implement data validation and error handling
-- [ ] Set up real-time data processing pipeline
+- [x] Design camera data ingestion interface
+- [x] Create API endpoint to receive camera feeds/data
+- [x] Implement data validation and error handling
+- [x] Set up real-time data processing pipeline
 
 ### 3. Traffic Prediction
 - [ ] Research and select ML model (e.g., LSTM, Prophet)
