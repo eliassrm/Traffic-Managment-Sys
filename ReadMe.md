@@ -129,3 +129,24 @@ Run rule evaluation manually for recent records:
 ```bash
 py manage.py process_alerts --lookback-minutes 30
 ```
+
+## Frontend Dashboard
+
+The web dashboard is available at:
+
+- `/`
+
+It provides:
+
+- Real-time metrics cards
+- Vehicle count chart by camera
+- Alert stream with severity styling
+- Camera feed viewer cards
+- Responsive layout for desktop and mobile
+
+Usage:
+
+1. Start server: `py manage.py runserver`
+2. Open `http://127.0.0.1:8000/`
+3. Login from the top panel to get an access token, then click `Refresh Data`
+4. Optionally enable auto refresh

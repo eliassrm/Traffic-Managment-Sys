@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traffic Pulse Board</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --ink: #13212f;
+      --paper: #fffaf1;
+      --panel: #fff5e7;
+      --accent: #e85d04;
+      --accent-soft: #f48c06;
+      --danger: #c1121f;
+      --ok: #2a9d8f;
+      --line: #d6c8b0;
+      --muted: #6f6353;
+      --shadow: 0 14px 28px rgba(19, 33, 47, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Gill Sans", "Franklin Gothic Medium", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 10%, #ffe6c4 0, transparent 40%),
+        radial-gradient(circle at 90% 0%, #ffd3a8 0, transparent 35%),
+        linear-gradient(160deg, #f8f1e7 0%, #f3efe6 45%, #eee5d8 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .topbar {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .auth-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    input, button, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: #c54d03;
+    }
+
+    .btn-secondary {
+      background: var(--panel);
+      color: var(--ink);
+    }
+
+    .status {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      top: -18px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 24%, transparent);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 14px;
+    }
+
+    .panel-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .chart-wrap {
+      height: 290px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px dashed var(--line);
+      padding: 8px;
+    }
+
+    canvas { width: 100%; height: 100%; }
+
+    .alerts {
+      display: grid;
+      gap: 8px;
+      max-height: 290px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .alert-item {
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--accent-soft);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px;
+      animation: fadeIn .35s ease;
+    }
+
+    .alert-item.critical { border-left-color: var(--danger); }
+    .alert-item.warning { border-left-color: var(--accent); }
+    .alert-item.info { border-left-color: var(--ok); }
+
+    .camera-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .feed {
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      min-height: 148px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.2), rgba(19,33,47,0.1)),
+        repeating-linear-gradient(120deg, #21405d, #21405d 20px, #19334a 20px, #19334a 40px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feed::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+      transform: translateX(-100%);
+      animation: scan 2.4s linear infinite;
+    }
+
+    .camera-meta {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+
+    .pill.online { background: #d8f2ee; color: #1d786d; }
+    .pill.offline { background: #ffe1db; color: #8f2d24; }
+    .pill.maintenance { background: #fff1cc; color: #7d5a06; }
+
+    @keyframes scan {
+      to { transform: translateX(100%); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .auth-grid, .metrics, .camera-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 14px; }
+      .auth-grid, .metrics, .camera-grid { grid-template-columns: 1fr; }
+      .title { font-size: 1.35rem; }
+      .value { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="topbar">
+      <h1 class="title">Traffic Pulse Board</h1>
+      <p class="subtitle">Live dashboard for traffic metrics, alerts, and camera status.</p>
+      <div class="auth-grid">
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+        <button class="btn-primary" id="loginBtn">Get Access Token</button>
+        <button class="btn-secondary" id="refreshBtn">Refresh Data</button>
+      </div>
+      <div class="auth-grid">
+        <input id="token" placeholder="Paste access token here">
+        <input id="interval" type="number" min="5" value="15" placeholder="Refresh seconds">
+        <button class="btn-secondary" id="startBtn">Start Auto Refresh</button>
+        <button class="btn-secondary" id="stopBtn">Stop Auto Refresh</button>
+      </div>
+      <div class="status" id="statusText">Waiting for token. Data requests need JWT authentication.</div>
+    </section>
+
+    <section class="metrics">
+      <article class="card"><div class="label">Active Cameras</div><div class="value" id="mCameras">0</div></article>
+      <article class="card"><div class="label">Latest Vehicles</div><div class="value" id="mVehicles">0</div></article>
+      <article class="card"><div class="label">Average Speed</div><div class="value" id="mSpeed">0 km/h</div></article>
+      <article class="card"><div class="label">Open Alerts</div><div class="value" id="mAlerts">0</div></article>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2 class="panel-title">Vehicle Count By Camera</h2>
+        <div class="chart-wrap"><canvas id="vehicleChart" width="800" height="260"></canvas></div>
+      </article>
+      <article class="card">
+        <h2 class="panel-title">Alert Stream</h2>
+        <div class="alerts" id="alertsPanel"></div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2 class="panel-title">Camera Feed Viewer</h2>
+      <div class="camera-grid" id="cameraPanel"></div>
+    </section>
+  </main>
+
+  <script>
+    let timerId = null;
+
+    function setStatus(message, isError = false) {
+      const el = document.getElementById('statusText');
+      el.textContent = message;
+      el.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+    }
+
+    function authHeaders() {
+      const token = document.getElementById('token').value.trim();
+      if (!token) {
+        throw new Error('Access token is required.');
+      }
+      return { Authorization: `Bearer ${token}` };
+    }
+
+    async function fetchJson(url) {
+      const headers = { ...authHeaders() };
+      const res = await fetch(url, { headers });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`${url} failed: ${res.status} ${text}`);
+      }
+      return res.json();
+    }
+
+    function latestTrafficByCamera(trafficRows) {
+      const latest = new Map();
+      for (const row of trafficRows) {
+        const current = latest.get(row.camera);
+        const time = new Date(row.measured_at).getTime();
+        if (!current || time > new Date(current.measured_at).getTime()) {
+          latest.set(row.camera, row);
+        }
+      }
+      return latest;
+    }
+
+    function drawVehicleChart(cameras, latestMap) {
+      const canvas = document.getElementById('vehicleChart');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const rows = cameras.map((camera) => {
+        const item = latestMap.get(camera.id);
+        return { code: camera.code, value: item ? item.vehicle_count : 0 };
+      });
+
+      const maxVal = Math.max(10, ...rows.map((r) => r.value));
+      const barW = Math.max(30, Math.floor((w - 40) / Math.max(1, rows.length)) - 10);
+
+      rows.forEach((row, idx) => {
+        const x = 24 + idx * (barW + 10);
+        const barH = Math.floor((row.value / maxVal) * (h - 70));
+        const y = h - 36 - barH;
+
+        const gradient = ctx.createLinearGradient(0, y, 0, h);
+        gradient.addColorStop(0, '#e85d04');
+        gradient.addColorStop(1, '#f48c06');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, y, barW, barH);
+
+        ctx.fillStyle = '#13212f';
+        ctx.font = '12px Trebuchet MS';
+        ctx.fillText(String(row.value), x + 4, y - 6);
+        ctx.fillText(row.code.slice(0, 7), x, h - 14);
+      });
+    }
+
+    function renderAlerts(alerts) {
+      const panel = document.getElementById('alertsPanel');
+      panel.innerHTML = '';
+
+      const openAlerts = alerts.filter((a) => a.status !== 'resolved').slice(0, 12);
+      if (openAlerts.length === 0) {
+        panel.innerHTML = '<div class="alert-item info">No active alerts right now.</div>';
+        return;
+      }
+
+      for (const alert of openAlerts) {
+        const div = document.createElement('div');
+        div.className = `alert-item ${alert.severity}`;
+        div.innerHTML = `
+          <strong>${alert.title}</strong>
+          <div>${alert.description || 'No description provided.'}</div>
+          <small>${alert.severity.toUpperCase()} • ${alert.status.toUpperCase()}</small>
+        `;
+        panel.appendChild(div);
+      }
+    }
+
+    function renderCameras(cameras, latestMap) {
+      const panel = document.getElementById('cameraPanel');
+      panel.innerHTML = '';
+
+      for (const camera of cameras) {
+        const latest = latestMap.get(camera.id);
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="feed"></div>
+          <div class="camera-meta">
+            <strong>${camera.code} • ${camera.name}</strong>
+            <span class="pill ${camera.status}">${camera.status}</span>
+          </div>
+          <div class="camera-meta">
+            <span>Vehicles: ${latest ? latest.vehicle_count : 0}</span>
+            <span>Speed: ${latest ? latest.avg_speed_kph : 0} km/h</span>
+          </div>
+        `;
+        panel.appendChild(card);
+      }
+    }
+
+    function updateMetrics(cameras, traffic, alerts) {
+      const latestMap = latestTrafficByCamera(traffic);
+      const latestRows = [...latestMap.values()];
+      const totalVehicles = latestRows.reduce((sum, row) => sum + row.vehicle_count, 0);
+      const avgSpeed = latestRows.length
+        ? (latestRows.reduce((sum, row) => sum + Number(row.avg_speed_kph), 0) / latestRows.length)
+        : 0;
+      const openAlerts = alerts.filter((a) => a.status !== 'resolved').length;
+
+      document.getElementById('mCameras').textContent = String(cameras.filter((c) => c.is_active).length);
+      document.getElementById('mVehicles').textContent = String(totalVehicles);
+      document.getElementById('mSpeed').textContent = `${avgSpeed.toFixed(1)} km/h`;
+      document.getElementById('mAlerts').textContent = String(openAlerts);
+
+      drawVehicleChart(cameras, latestMap);
+      renderAlerts(alerts);
+      renderCameras(cameras, latestMap);
+    }
+
+    async function loadData() {
+      try {
+        const [cameras, traffic, alerts] = await Promise.all([
+          fetchJson('/api/cameras/'),
+          fetchJson('/api/traffic/'),
+          fetchJson('/api/alerts/'),
+        ]);
+
+        updateMetrics(cameras, traffic, alerts);
+        setStatus(`Last updated at ${new Date().toLocaleTimeString()}`);
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    async function loginAndSetToken() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        setStatus('Enter username and password first.', true);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/token/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`Login failed: ${res.status} ${text}`);
+        }
+
+        const data = await res.json();
+        document.getElementById('token').value = data.access;
+        setStatus('Token loaded. Click Refresh Data to fetch dashboard metrics.');
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    function startAutoRefresh() {
+      const seconds = Number(document.getElementById('interval').value || 15);
+      if (timerId) {
+        clearInterval(timerId);
+      }
+      timerId = setInterval(loadData, Math.max(5, seconds) * 1000);
+      setStatus(`Auto refresh active every ${Math.max(5, seconds)} seconds.`);
+    }
+
+    function stopAutoRefresh() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+      setStatus('Auto refresh stopped.');
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', loginAndSetToken);
+    document.getElementById('refreshBtn').addEventListener('click', loadData);
+    document.getElementById('startBtn').addEventListener('click', startAutoRefresh);
+    document.getElementById('stopBtn').addEventListener('click', stopAutoRefresh);
+  </script>
+</body>
+</html>

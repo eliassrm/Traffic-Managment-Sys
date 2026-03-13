@@ -36,12 +36,16 @@
 - [x] Build alert history tracking
 
 ### 6. Frontend UI (Minimalist Design)
-- [ ] Create dashboard layout
-- [ ] Display real-time traffic metrics
-- [ ] Show vehicle count visualization
-- [ ] Implement alert notifications
-- [ ] Build camera feed viewer
-- [ ] Design responsive layout
+- [x] Create dashboard layout
+- [x] Display real-time traffic metrics
+- [x] Show vehicle count visualization
+- [x] Implement alert notifications
+- [x] Build camera feed viewer
+- [x] Design responsive layout
+
+### 6.1 Frontend UI (Minimalist Design)
+- [ ] Create dashboard layout with grey accent color(add html,css,js)
+- [ ] Create a sample database to fetch data like camera's output
 
 ### 7. Testing & Deployment
 - [ ] Unit and integration tests
