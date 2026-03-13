@@ -48,6 +48,6 @@
 - [x] Create a sample database to fetch data like camera's output
 
 ### 7. Testing & Deployment
-- [ ] Unit and integration tests
+- [x] Unit and integration tests
 - [ ] Deploy to production server
 - [ ] Monitor system performance

@@ -156,3 +156,17 @@ Seed sample camera output data for dashboard/API testing:
 ```bash
 py manage.py seed_sample_camera_data --reset --records-per-camera 24
 ```
+
+## Testing
+
+Run full test suite:
+
+```bash
+py manage.py test
+```
+
+Run integration workflow test only:
+
+```bash
+py manage.py test users
+```
