@@ -44,3 +44,39 @@ u.groups.clear()
 u.groups.add(Group.objects.get(name="viewer"))
 u.save()
 ```
+
+## Traffic Prediction (Markov + Kalman)
+
+This project uses a non-ML prediction pipeline:
+
+- Markov chain for congestion state transitions
+- Kalman filtering for smoothing vehicle count, speed, and occupancy
+
+Prediction endpoints:
+
+- `GET /api/traffic/predictions/`
+- `POST /api/traffic/predictions/generate/`
+
+Generate for one camera:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/traffic/predictions/generate/ \
+	-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+	-H "Content-Type: application/json" \
+	-d '{"camera_code":"CAM-001","horizon_minutes":10}'
+```
+
+Generate for all active cameras:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/traffic/predictions/generate/ \
+	-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+	-H "Content-Type: application/json" \
+	-d '{"horizon_minutes":5}'
+```
+
+Run periodic prediction updates:
+
+```bash
+py manage.py generate_traffic_predictions --loop --interval-seconds 300
+```

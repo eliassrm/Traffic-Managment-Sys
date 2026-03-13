@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 from alerts.models import Alert
 from cameras.models import Camera
-from traffic.models import Traffic
+from traffic.models import Traffic, TrafficPrediction
 from vehicles.models import Vehicle
 
 
@@ -17,6 +17,7 @@ class Command(BaseCommand):
             "traffic": Traffic,
             "vehicle": Vehicle,
             "alert": Alert,
+            "trafficprediction": TrafficPrediction,
         }
 
         permission_map = self._build_permission_map(model_map)
@@ -27,6 +28,7 @@ class Command(BaseCommand):
                 "view_traffic",
                 "view_vehicle",
                 "view_alert",
+                "view_trafficprediction",
             ],
             "operator": [
                 "view_camera",
@@ -40,6 +42,8 @@ class Command(BaseCommand):
                 "view_alert",
                 "add_alert",
                 "change_alert",
+                "view_trafficprediction",
+                "add_trafficprediction",
             ],
             "admin": [
                 "view_camera",
@@ -58,6 +62,10 @@ class Command(BaseCommand):
                 "add_alert",
                 "change_alert",
                 "delete_alert",
+                "view_trafficprediction",
+                "add_trafficprediction",
+                "change_trafficprediction",
+                "delete_trafficprediction",
             ],
         }
 

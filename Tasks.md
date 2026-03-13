@@ -17,11 +17,11 @@
 - [x] Set up real-time data processing pipeline
 
 ### 3. Traffic Prediction
-- [ ] Research and select ML model (e.g., LSTM, Prophet)
-- [ ] Train prediction model on historical data
-- [ ] Create prediction service/module
-- [ ] Integrate predictions into Django backend
-- [ ] Schedule periodic prediction updates
+- [x] Skip "Research and select ML model (e.g., LSTM, Prophet)" (Markov chain + Kalman filter)
+- [x] Skip "Train prediction model on historical data" (no ML training needed)
+- [x] Create prediction service/module
+- [x] Integrate predictions into Django backend
+- [x] Schedule periodic prediction updates
 
 ### 4. Data Storage
 - [ ] Design PostgreSQL schema (traffic metrics, vehicle counts, timestamps)
