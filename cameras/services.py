@@ -1,5 +1,6 @@
 from django.db import transaction
 
+from alerts.services import evaluate_traffic_alerts
 from traffic.models import Traffic
 from vehicles.models import Vehicle
 
@@ -40,7 +41,10 @@ def ingest_camera_payload(validated_data):
         camera.last_seen_at = measured_at
         camera.save(update_fields=['last_seen_at', 'updated_at'])
 
+        created_alerts = evaluate_traffic_alerts(traffic_record)
+
     return {
         'traffic_record': traffic_record,
         'vehicle_events_created': len(vehicle_events),
+        'alerts_created': len(created_alerts),
     }

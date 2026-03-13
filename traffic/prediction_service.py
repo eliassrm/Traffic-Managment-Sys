@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from alerts.services import evaluate_prediction_alerts
 from cameras.models import Camera
 
 from .models import Traffic, TrafficPrediction
@@ -103,6 +104,8 @@ def generate_prediction_for_camera(camera, horizon_minutes=5, min_samples=5):
         predicted_occupancy_percent=predicted_occupancy,
         transition_probabilities=transition_probabilities,
     )
+
+    evaluate_prediction_alerts(prediction)
 
     return prediction
 

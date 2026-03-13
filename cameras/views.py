@@ -28,6 +28,7 @@ class CameraIngestionView(APIView):
 				'message': 'Camera payload processed successfully.',
 				'traffic_record_id': result['traffic_record'].id,
 				'vehicle_events_created': result['vehicle_events_created'],
+				'alerts_created': result['alerts_created'],
 			},
 			status=status.HTTP_201_CREATED,
 		)

@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 
-from alerts.models import Alert
+from alerts.models import Alert, AlertNotification, AlertRule
 from cameras.models import Camera
 from traffic.models import Traffic, TrafficPrediction
 from vehicles.models import Vehicle
@@ -17,6 +17,8 @@ class Command(BaseCommand):
             "traffic": Traffic,
             "vehicle": Vehicle,
             "alert": Alert,
+            "alertrule": AlertRule,
+            "alertnotification": AlertNotification,
             "trafficprediction": TrafficPrediction,
         }
 
@@ -28,6 +30,8 @@ class Command(BaseCommand):
                 "view_traffic",
                 "view_vehicle",
                 "view_alert",
+                "view_alertrule",
+                "view_alertnotification",
                 "view_trafficprediction",
             ],
             "operator": [
@@ -42,6 +46,9 @@ class Command(BaseCommand):
                 "view_alert",
                 "add_alert",
                 "change_alert",
+                "view_alertrule",
+                "change_alertrule",
+                "view_alertnotification",
                 "view_trafficprediction",
                 "add_trafficprediction",
             ],
@@ -62,6 +69,14 @@ class Command(BaseCommand):
                 "add_alert",
                 "change_alert",
                 "delete_alert",
+                "view_alertrule",
+                "add_alertrule",
+                "change_alertrule",
+                "delete_alertrule",
+                "view_alertnotification",
+                "add_alertnotification",
+                "change_alertnotification",
+                "delete_alertnotification",
                 "view_trafficprediction",
                 "add_trafficprediction",
                 "change_trafficprediction",

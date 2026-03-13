@@ -105,3 +105,27 @@ Tune batch size for large datasets:
 ```bash
 py manage.py archive_traffic_data --older-than-days 30 --batch-size 5000
 ```
+
+## Alert System
+
+Features implemented:
+
+- Overflow threshold rules (`AlertRule`)
+- Automatic alert generation from live traffic ingestion and predictions
+- Notification history records (`AlertNotification`) for channels (`console`, `email`, `push`)
+- Alert lifecycle actions (`acknowledge`, `resolve`)
+
+Alert endpoints:
+
+- `GET/POST /api/alert-rules/`
+- `GET/PUT/PATCH/DELETE /api/alert-rules/{id}/`
+- `GET/POST /api/alerts/`
+- `POST /api/alerts/{id}/acknowledge/`
+- `POST /api/alerts/{id}/resolve/`
+- `GET /api/alert-notifications/`
+
+Run rule evaluation manually for recent records:
+
+```bash
+py manage.py process_alerts --lookback-minutes 30
+```
