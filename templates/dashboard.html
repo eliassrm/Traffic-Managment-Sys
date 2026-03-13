@@ -6,17 +6,17 @@
   <title>Traffic Pulse Board</title>
   <style>
     :root {
-      --bg: #f3efe6;
-      --ink: #13212f;
-      --paper: #fffaf1;
-      --panel: #fff5e7;
-      --accent: #e85d04;
-      --accent-soft: #f48c06;
+      --bg: #eceff1;
+      --ink: #1f2933;
+      --paper: #f8fafc;
+      --panel: #eef2f6;
+      --accent: #6b7280;
+      --accent-soft: #9ca3af;
       --danger: #c1121f;
-      --ok: #2a9d8f;
-      --line: #d6c8b0;
-      --muted: #6f6353;
-      --shadow: 0 14px 28px rgba(19, 33, 47, 0.12);
+      --ok: #1d7f74;
+      --line: #cbd5e1;
+      --muted: #4b5563;
+      --shadow: 0 14px 28px rgba(31, 41, 51, 0.12);
     }
 
     * { box-sizing: border-box; }
@@ -26,9 +26,9 @@
       font-family: "Trebuchet MS", "Gill Sans", "Franklin Gothic Medium", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 20% 10%, #ffe6c4 0, transparent 40%),
-        radial-gradient(circle at 90% 0%, #ffd3a8 0, transparent 35%),
-        linear-gradient(160deg, #f8f1e7 0%, #f3efe6 45%, #eee5d8 100%);
+        radial-gradient(circle at 20% 10%, #f8fafc 0, transparent 40%),
+        radial-gradient(circle at 90% 0%, #dfe5ec 0, transparent 35%),
+        linear-gradient(160deg, #f1f5f9 0%, #e6ebf1 45%, #dde3ea 100%);
       min-height: 100vh;
       padding: 24px;
     }
@@ -89,7 +89,7 @@
     .btn-primary {
       background: var(--accent);
       color: #fff;
-      border-color: #c54d03;
+      border-color: #4b5563;
     }
 
     .btn-secondary {
@@ -197,8 +197,8 @@
       border: 1px solid var(--line);
       min-height: 148px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.2), rgba(19,33,47,0.1)),
-        repeating-linear-gradient(120deg, #21405d, #21405d 20px, #19334a 20px, #19334a 40px);
+        linear-gradient(180deg, rgba(255,255,255,0.2), rgba(31,41,51,0.14)),
+        repeating-linear-gradient(120deg, #5b6775, #5b6775 20px, #4b5563 20px, #4b5563 40px);
       position: relative;
       overflow: hidden;
     }
@@ -230,7 +230,7 @@
 
     .pill.online { background: #d8f2ee; color: #1d786d; }
     .pill.offline { background: #ffe1db; color: #8f2d24; }
-    .pill.maintenance { background: #fff1cc; color: #7d5a06; }
+    .pill.maintenance { background: #e5e7eb; color: #374151; }
 
     @keyframes scan {
       to { transform: translateX(100%); }
@@ -358,8 +358,8 @@
         const y = h - 36 - barH;
 
         const gradient = ctx.createLinearGradient(0, y, 0, h);
-        gradient.addColorStop(0, '#e85d04');
-        gradient.addColorStop(1, '#f48c06');
+        gradient.addColorStop(0, '#6b7280');
+        gradient.addColorStop(1, '#9ca3af');
 
         ctx.fillStyle = gradient;
         ctx.fillRect(x, y, barW, barH);

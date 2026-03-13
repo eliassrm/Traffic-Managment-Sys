@@ -150,3 +150,9 @@ Usage:
 2. Open `http://127.0.0.1:8000/`
 3. Login from the top panel to get an access token, then click `Refresh Data`
 4. Optionally enable auto refresh
+
+Seed sample camera output data for dashboard/API testing:
+
+```bash
+py manage.py seed_sample_camera_data --reset --records-per-camera 24
+```

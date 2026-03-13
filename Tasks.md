@@ -44,8 +44,8 @@
 - [x] Design responsive layout
 
 ### 6.1 Frontend UI (Minimalist Design)
-- [ ] Create dashboard layout with grey accent color(add html,css,js)
-- [ ] Create a sample database to fetch data like camera's output
+- [x] Create dashboard layout with grey accent color(add html,css,js)
+- [x] Create a sample database to fetch data like camera's output
 
 ### 7. Testing & Deployment
 - [ ] Unit and integration tests
