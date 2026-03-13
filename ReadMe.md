@@ -157,6 +157,25 @@ Seed sample camera output data for dashboard/API testing:
 py manage.py seed_sample_camera_data --reset --records-per-camera 24
 ```
 
+Generate synthetic video-camera stream data (feeds ingestion pipeline):
+
+```bash
+py manage.py generate_camera_stream --camera-code SAMPLE-CAM-001 --samples 120 --interval-seconds 5 --mode normal
+```
+
+Stream modes:
+
+- `calm`
+- `normal`
+- `rush`
+- `chaos`
+
+Realtime mode (sleep between samples):
+
+```bash
+py manage.py generate_camera_stream --camera-code SAMPLE-CAM-001 --samples 60 --interval-seconds 2 --mode rush --realtime
+```
+
 ## Testing
 
 Run full test suite:
