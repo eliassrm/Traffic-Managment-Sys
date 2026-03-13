@@ -1,6 +1,8 @@
 from datetime import timedelta
+from io import StringIO
 
 from django.contrib.auth.models import Permission, User
+from django.core.management import call_command
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
@@ -8,7 +10,7 @@ from rest_framework.test import APITestCase
 
 from cameras.models import Camera
 
-from .models import Traffic, TrafficPrediction
+from .models import Traffic, TrafficArchive, TrafficPrediction
 
 
 class TrafficPredictionTests(APITestCase):
@@ -63,3 +65,51 @@ class TrafficPredictionTests(APITestCase):
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertGreaterEqual(response.data['generated_count'], 1)
+
+
+class TrafficArchivalCommandTests(APITestCase):
+	def setUp(self):
+		self.camera = Camera.objects.create(
+			code='CAM-ARCH-1',
+			name='Archive Camera',
+			latitude=30.100000,
+			longitude=31.100000,
+			status='online',
+			is_active=True,
+		)
+
+		old_time = timezone.now() - timedelta(days=45)
+		recent_time = timezone.now() - timedelta(days=3)
+
+		self.old_record = Traffic.objects.create(
+			camera=self.camera,
+			measured_at=old_time,
+			vehicle_count=20,
+			avg_speed_kph=50,
+			congestion_level='low',
+			occupancy_percent=30,
+		)
+		self.recent_record = Traffic.objects.create(
+			camera=self.camera,
+			measured_at=recent_time,
+			vehicle_count=40,
+			avg_speed_kph=28,
+			congestion_level='high',
+			occupancy_percent=70,
+		)
+
+	def test_archive_command_dry_run(self):
+		stdout = StringIO()
+		call_command('archive_traffic_data', older_than_days=30, dry_run=True, stdout=stdout)
+
+		self.assertEqual(Traffic.objects.count(), 2)
+		self.assertEqual(TrafficArchive.objects.count(), 0)
+
+	def test_archive_command_moves_old_records(self):
+		stdout = StringIO()
+		call_command('archive_traffic_data', older_than_days=30, batch_size=10, stdout=stdout)
+
+		self.assertEqual(Traffic.objects.count(), 1)
+		self.assertEqual(TrafficArchive.objects.count(), 1)
+		archived = TrafficArchive.objects.first()
+		self.assertEqual(archived.source_record_id, self.old_record.id)

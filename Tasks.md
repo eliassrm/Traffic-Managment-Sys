@@ -24,10 +24,10 @@
 - [x] Schedule periodic prediction updates
 
 ### 4. Data Storage
-- [ ] Design PostgreSQL schema (traffic metrics, vehicle counts, timestamps)
+- [x] Design PostgreSQL schema (traffic metrics, vehicle counts, timestamps)
 - [x] Create migration scripts
-- [ ] Implement data archival strategy
-- [ ] Set up data indexing for performance
+- [x] Implement data archival strategy
+- [x] Set up data indexing for performance
 
 ### 5. Alert System
 - [ ] Define overflow thresholds and rules

@@ -80,3 +80,28 @@ Run periodic prediction updates:
 ```bash
 py manage.py generate_traffic_predictions --loop --interval-seconds 300
 ```
+
+## Data Storage and Archival
+
+Traffic data is split into two tables:
+
+- `Traffic`: active near-real-time records
+- `TrafficArchive`: historical records moved by retention jobs
+
+Archive records older than 30 days:
+
+```bash
+py manage.py archive_traffic_data --older-than-days 30
+```
+
+Preview archival without moving/deleting data:
+
+```bash
+py manage.py archive_traffic_data --older-than-days 30 --dry-run
+```
+
+Tune batch size for large datasets:
+
+```bash
+py manage.py archive_traffic_data --older-than-days 30 --batch-size 5000
+```
